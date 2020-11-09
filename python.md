@@ -1,3 +1,7 @@
+
+
+
+
 ### 1.python递归的最大层数
 
 998
@@ -8,6 +12,297 @@
 
 
 
+
+
+
+
+### python 字典(dict)按键和值排序
+
+先看一下，直接用sorted()排序的情况。
+
+```python
+dict1={'a':2,'e':3,'f':8,'d':4}
+dict2 = sorted(dict1)
+print(dict2)
+```
+
+结果：
+
+```python
+['a', 'd', 'e', 'f'] #sorted()默认是对字典的键，从小到大进行排序
+```
+
+
+
+
+
+ 下面的是按照value的值从大到小的顺序来排序。
+
+```python
+dic = {'a':31, 'bc':5, 'c':3, 'asd':4, 'aa':74, 'd':0}
+dict= sorted(dic.items(), key=lambda d:d[1], reverse = True)
+print(dict)
+
+[('aa', 74), ('a', 31), ('bc', 5), ('asd', 4), ('c', 3), ('d', 0)]
+```
+
+对字典按键（key）排序：
+
+```python
+dic = {'a':31, 'bc':5, 'c':3, 'asd':4, 'aa':74, 'd':0}
+dict= sorted(dic.items(), key=lambda d:d[0], reverse = True)
+print(dict)
+[('d', 0), ('c', 3), ('bc', 5), ('asd', 4), ('aa', 74), ('a', 31)]
+```
+
+###### 字典组成的列表排序
+
+数据类型是列表，元素是字典，要求根据字典的value排序
+
+假设这样一个场景，用户user_id，买商品goods_id，对商品的评分是score，要按评分进行逆序排序
+
+```python
+dic = [{"goods_id":3,"user_id":11, "score":0.8},
+       {"goods_id":1,"user_id":22, "score":0.1},
+       {"goods_id":2,"user_id":33, "score":0.5}]
+dic1 = sorted(dic, key=lambda x:x['score'], reverse=True)
+print(dic1)
+
+
+[{'goods_id': 3, 'user_id': 11, 'score': 0.8},
+ {'goods_id': 2, 'user_id': 33, 'score': 0.5},
+ {'goods_id': 1, 'user_id': 22, 'score': 0.1}]
+```
+
+
+
+### OrderedDict函数详细介绍
+
+python3.6之后Dict就都有序了，这个OrderedDict只在python2或python3.5之前有。
+
+###### 1、定义
+
+python中字典Dict是利用hash存储，因为各元素之间没有顺序。OrderedDict听名字就知道他是 **按照有序插入顺序存储** 的有序字典。 除此之外还可根据key， val进行排序。
+
+###### 2、初始化
+
+ 2.1 先初始化定义一个OrderedDict，然后按照键值对插入，此时dict可以记录插入字典的顺序
+
+```python
+import collections
+
+d = collections.OrderedDict()
+d["name"] = "muya"
+d["age"] = 25
+d["money"] = "qiongB"
+
+for key, value in d.items():
+    print(key, value)
+
+# 输出：
+# name muya
+# age 25
+# money qiongB
+```
+
+ 2.2 在定义时初始化好键值对，但这些初始化的内容无法实现有序。不过之后再对该字典进行插入的键值仍然是有序的。
+
+```python
+import collections
+
+d = collections.OrderedDict(name="muya", age=25, money="qiongB")
+d["dream"] = "have money"
+d["other dream"] = "have gf"
+
+for key, value in d.items():
+    print(key, value)
+    
+# 输出：
+# money qiongB
+# age 25
+# name muya
+# dream have money
+# other dream have gf
+```
+
+
+
+###### 3、排序
+
+  OrderedDict可根据key 或者val 进行排序。此部分即为很多文章都有的部分， 抄自[文章](https://www.cnblogs.com/notzy/p/9312049.html)  
+
+```python
+ 1 dd = {'banana': 3, 'apple':4, 'pear': 1, 'orange': 2}
+
+ 2 # 按key排序
+ 3 kd = collections.OrderedDict(sorted(dd.items(), key=lambda t: t[0]))
+ 4 print kd
+
+ 5 # 按照value排序
+ 6 vd = collections.OrderedDict(sorted(dd.items(),key=lambda t:t[1]))
+ 7 print vd
+ 9 # 输出
+10 OrderedDict([('apple', 4), ('banana', 3), ('orange', 2), ('pear', 1)])
+11 OrderedDict([('pear', 1), ('orange', 2), ('banana', 3), ('apple', 4)])
+```
+
+### 斐波那契
+
+```python
+#生成器实现
+def fib4(number):
+    n, a, b = 0, 0, 1
+    while n < number:
+        yield b
+        a, b = b, a + b
+        n = n + 1
+    return 'OK!'
+gen=fib4(5)
+for i in range(5):
+    value = next(gen)
+    print(1,"列",value)
+   
+结果：
+1 列 1
+1 列 1
+1 列 2
+1 列 3
+1 列 5
+```
+
+```python
+def fib1(n):
+    if n == 0 :
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib1(n - 1) + fib1(n - 2)
+
+known = {0: 0, 1: 1}
+
+def fib2(n):
+    if n in known:
+        return known[n]
+    res = fib2(n - 1) + fib2(n - 2)
+    known[n] = res
+    return res
+
+结果：
+2020-11-09 10:28:42.720982
+fib1(40)=102334155
+2020-11-09 10:29:40.512251
+fib2(40)=102334155
+2020-11-09 10:29:40.512251
+```
+
+
+
+### 装饰器
+
+
+
+```python
+def debug(func):
+    def wrapper(*args, **kwargs):  # 指定宇宙无敌参数
+        print "[DEBUG]: enter {}()".format(func.__name__)
+        print 'Prepare and say...',
+        return func(*args, **kwargs)
+    return wrapper  # 返回
+
+@debug
+def say(something):
+    print "hello {}!".format(something)
+```
+
+###### 带参数的装饰器
+
+假设我们前文的装饰器需要完成的功能不仅仅是能在进入某个函数后打出log信息，而且还需指定log的级别，那么装饰器就会是这样的。
+
+```python
+def logging(level):
+    def wrapper(func):
+        def inner_wrapper(*args, **kwargs):
+            print "[{level}]: enter function {func}()".format(
+                level=level,
+                func=func.__name__)
+            return func(*args, **kwargs)
+        return inner_wrapper
+    return wrapper
+
+@logging(level='INFO')
+def say(something):
+    print "say {}!".format(something)
+
+# 如果没有使用@语法，等同于
+# say = logging(level='INFO')(say)
+
+@logging(level='DEBUG')
+def do(something):
+    print "do {}...".format(something)
+
+if __name__ == '__main__':
+    say('hello')
+    do("my work")
+```
+
+是不是有一些晕？你可以这么理解，当带参数的装饰器被打在某个函数上时，比如`@logging(level='DEBUG')`，它其实是一个函数，会马上被执行，只要这个它返回的结果是一个装饰器时，那就没问题。细细再体会一下。
+
+
+
+###### 基于类实现的装饰器
+
+装饰器函数其实是这样一个接口约束，它必须接受一个callable对象作为参数，然后返回一个callable对象。在Python中一般callable对象都是函数，但也有例外。只要某个对象重载了`__call__()`方法，那么这个对象就是callable的。
+
+```python
+class Test():
+    def __call__(self):
+        print 'call me!'
+
+t = Test()
+t()  # call me
+```
+
+像`__call__`这样前后都带下划线的方法在Python中被称为内置方法，有时候也被称为魔法方法。重载这些魔法方法一般会改变对象的内部行为。上面这个例子就让一个类对象拥有了被调用的行为。
+
+回到装饰器上的概念上来，装饰器要求接受一个callable对象，并返回一个callable对象（不太严谨，详见后文）。那么用类来实现也是也可以的。我们可以让类的构造函数`__init__()`接受一个函数，然后重载`__call__()`并返回一个函数，也可以达到装饰器函数的效果。
+
+```python
+class logging(object):
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print "[DEBUG]: enter function {func}()".format(
+            func=self.func.__name__)
+        return self.func(*args, **kwargs)
+@logging
+def say(something):
+    print "say {}!".format(something)
+```
+
+### 带参数的类装饰器
+
+如果需要通过类形式实现带参数的装饰器，那么会比前面的例子稍微复杂一点。那么在构造函数里接受的就不是一个函数，而是传入的参数。通过类把这些参数保存起来。然后在重载`__call__`方法是就需要接受一个函数并返回一个函数。
+
+```python
+class logging(object):
+    def __init__(self, level='INFO'):
+        self.level = level
+        
+    def __call__(self, func): # 接受函数
+        def wrapper(*args, **kwargs):
+            print "[{level}]: enter function {func}()".format(
+                level=self.level,
+                func=func.__name__)
+            func(*args, **kwargs)
+        return wrapper  #返回函数
+
+@logging(level='INFO')
+def say(something):
+    print "say {}!".format(something)
+```
+
 ### 3.Python可迭代对象，迭代器，生成器的区别
 
 #### 三者简要关系图
@@ -17,6 +312,20 @@
 ![img](https://img-blog.csdn.net/20170516000644044?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamluaXhpbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center) 
 
 #### 可迭代对象与迭代器
+
+
+
+可迭代对象（list，set，dict）可以重复迭代，只能使用for循环；迭代器只能迭代一次，可以通过next或for进行迭代。
+
+ps：可迭代对象不能使用next函数调用但是可以使用for调用，而迭代器可以使用next，也可以使用for进行调用。
+
+ps：他俩最大的区别就是，可迭代对象可以无限迭代，而迭代器只能迭代一次（是个数据流的形式！）。
+
+判断迭代器 ： isinstance([], Iterator)。
+
+判断可迭代对象： isinstance([], Iterable)。
+
+
 
 
 
@@ -97,7 +406,7 @@ for i in my_list:                # 迭代
     print i 
 ```
 
-![image-20201103101759479](D:\code\python\installation_guide\python面试题\image-20201103101759479.png)
+![image-20201103101759479](D:\code\python\installation_guide\python_interview\python\image-20201103101759479.png)
 
 iter(collection)
 1）用于返回collection对象的迭代器实例，这里的collection我认为表示的是可迭代对象，即该对象必须实现**iter**方法；**事实上iter函数与\**iter\**方法联系非常紧密，iter()是直接调用该对象的\**iter\**()，并把\**iter\**()的返回结果作为自己的返回值，故该用法常被称为“创建迭代器”。**
@@ -210,6 +519,26 @@ obj = l.__iter__()
 ​		xreadlines返回的是一个生成器类型,python3已经没有改方法.
 
 ​		readlines返回的是一个列表: [‘第一行\n’, ‘第二行\n’, ‘第三行’]
+
+
+
+- 字符编码： py3中默认字符编码是unicode；py2中默认字符编码是 ASCII，如果文件中出现了中文，需要在顶部加入coding声明`#coding:utf8`
+
+- 让用户输入：py3中直接使用`input()`； py2中需要使用`raw_input()`
+- range和xrange：py3中的`range` == py2中的 `xrange`， 返回类似迭代器的东西，节省内存空间
+
+- 语句变函数: py3中为`print()`, `exec()` 是一个方法，必须加上括号； py2中为`print`, `exec`
+
+- 数据传输： py3中socket传过来的数据是byte类型 / hashlib包update也需要传bytes类型的数据； py2中则可以直接传入str, e.g
+
+### 你调试Python代码的方法有哪些?
+
+具体IDE都有调试，比如:IDLE, Eclipse+Pydev都可以设置断点调试。  
+pdb模块也可以做调试。 
+还有PyChecker和Pylint 
+PyChecker是一个Python代码的静态分析工具，它可以帮助查找Python代码的bug, 会对代码的复杂度和格式提出警告  
+
+Pylint  是另外一个工具可以进行coding standard检查。 
 
 ### 5.字符串，列表，元祖，字典每个常用的5个方法
 
@@ -591,11 +920,11 @@ list2.append(list1)
 
 针对循环引用的情况：我们有一个“孤岛”或是一组未使用的、互相指向的对象，但是谁都没有外部引用。换句话说，我们的程序不再使用这些节点对象了，所以我们希望Python的垃圾回收机制能够足够智能去释放这些对象并回收它们占用的内存空间。但是这不可能，因为所有的引用计数都是1而不是0。Python的引用计数算法不能够处理互相指向自己的对象。你的代码也许会在不经意间包含循环引用并且你并未意识到。事实上，当你的Python程序运行的时候它将会建立一定数量的“浮点数垃圾”，Python的GC不能够处理未使用的对象因为应用计数值不会到零。 
 这就是为什么Python要引入Generational GC算法的原因！ 
- 
+
 
 
  『标记清除（Mark—Sweep）』算法是一种基于追踪回收（tracing GC）技术实现的垃圾回收算法。它分为两个阶段：第一阶段是标记阶段，GC会把所有的『活动对象』打上标记，第二阶段是把那些没有标记的对象『非活动对象』进行回收。那么GC又是如何判断哪些是活动对象哪些是非活动对象的呢？
- 
+
  对象之间通过引用（指针）连在一起，构成一个有向图，对象构成这个有向图的节点，而引用关系构成这个有向图的边。从根对象（root object）出发，沿着有向边遍历对象，可达的（reachable）对象标记为活动对象，不可达的对象就是要被清除的非活动对象。根对象就是全局变量、调用栈、寄存器。
 
 ![img](D:\code\python\python_interview\python\20181112111929278.png)
@@ -646,17 +975,245 @@ os,sys,datetime,json,re,logging,traceback,subprocess,configparser,ramdon,shutil
 
 paramiko，redis，request,BeautifulSoup,pymysql,django,flask,postgres
 
+
+
+### 简单谈下GIL
+
+ Global Interpreter Lock(全局解释器锁)
+
+  Python代码的执行由Python 虚拟机(也叫解释器主循环，CPython版本)来控制，Python 在设计之初就考虑到要在解释器的主循环中，同时只有一个线程在执行，即在任意时刻，只有一个线程在解释器中运行。对Python 虚拟机的访问由全局解释器锁（GIL）来控制，正是这个锁能保证同一时刻只有一个线程在运行。
+在多线程环境中，Python 虚拟机按以下方式执行：
+
+1. 设置GIL
+
+2. 切换到一个线程去运行
+
+3. 运行：
+      a. 指定数量的字节码指令，或者
+      b. 线程主动让出控制（可以调用time.sleep(0)）
+
+4. 把线程设置为睡眠状态
+
+5. 解锁GIL
+
+6. 再次重复以上所有步骤
+
+    
+
 ### 10.re的match和search区别？
+
+match（）函数只检测RE是不是在string的开始位置匹配， search()会扫描整个string查找匹配, 也就是说match（）只有在0位置匹配成功的话才有返回，如果不是开始位置匹配成功的话，match()就返回none
+
+```python
+import re
+>>> print(re.match('super', 'superstition').span())
+(0, 5)
+>>> print(re.match('super', 'insuperable'))
+None
+
+>>> print(re.search('super', 'superstition').span())
+(0, 5)
+>>> print(re.search('super', 'insuperable').span())
+(2, 7)
+
+
+
+```
+
+
 
 ### 11.什么是正则的贪婪匹配？
 
+1、贪婪匹配
+
+总是尝试匹配尽可能多的字符
+
+2、非贪婪匹配
+
+是尝试匹配尽可能少的字符
+
+```python
+import re
+
+secret_code = 'hadkfalifexxIxxfasdjifja134xxlovexx23345sdfxxyouxx8dfse'
+b = re.findall('xx.*xx',secret_code)   # 贪婪匹配 
+print (b) # ['xxIxxfasdjifja134xxlovexx23345sdfxxyouxx']
+c = re.findall('xx.*?xx',secret_code)  # 非贪婪匹配
+print(c) # ['xxIxx', 'xxlovexx', 'xxyouxx']
+```
+
+贪婪格式：xx.*xx
+
+非贪婪格式：xx.*?xx
+
+区别重点在：.* 和 .*？
+
 ### 12 def func(a,b=[])这种写法有什么坑？
+
+```python
+def func(a,b=[]):
+    b.append(a)
+    return b
+
+l1 = func(1)
+l2 = func(2,[11,22])
+l3 = func(3)
+
+
+print(l1,l2,l3)
+#执行结果： [1,3]   [11,22,2]   [1,3]
+
+```
+
+函数的第二个默认参数是一个list，当第一次执行的时候实例化了一个list，第三次执行还是用第一次执行的时候实例化的地址存储，所以第一和第三次执行的结果就是相同的，想每次执行只输出当前传入参数 ，默认参数应该设置为None。
 
 ### 13.用python实现一个二分查找函数
 
-### 14.谈谈对闭包的理解
+```python
+#二分法查找
+data = [1, 3, 6, 7, 9, 12, 14, 16, 17, 18, 20, 21, 22, 23, 30, 32, 33, 35]
 
-### 15.os和sys模块的作用？
+def binary_search(dataset,find_num):
+    if len(dataset) > 1:
+        mid = int(len(dataset) / 2)
+        if dataset[mid] == find_num:  # find it
+            print("找到数字", dataset[mid])
+        elif dataset[mid] > find_num:  # 找的数在mid左面
+            print("\033[31;1m找的数在mid[%s]左面\033[0m" % dataset[mid])
+            return binary_search(dataset[0:mid], find_num)
+        else:  # 找的数在mid右面
+            print("\033[32;1m找的数在mid[%s]右面\033[0m" % dataset[mid])
+            return binary_search(dataset[mid + 1:], find_num)
+    else:
+        if dataset[0] == find_num:  # find it
+            print("找到数字啦", dataset[0])
+        else:
+            print("没的分了,要找的数字[%s]不在列表里" % find_num)
+
+binary_search(data,20)
+```
+
+
+
+### 请写出一段Python代码实现删除一个list里面的重复元素
+
+1,使用set函数，set(list)
+
+2，使用字典函数
+
+```python
+a=[1,2,4,2,4,5,6,5,7,8,9,0]
+b = {}
+b=b.fromkeys(a)
+c=list(b.keys())
+print(c)
+
+[1, 2, 4, 5, 6, 7, 8, 9, 0]
+```
+
+### python2,python3中的整除
+
+python2:
+
+```python
+>>> print(5/2)
+2
+>>> print(5.0/2)
+2.5
+>>> print(5//2)
+2
+>>> print(5.0//2)
+2.0
+>>> print(5.0//2.0)
+2.0
+>>> 
+
+```
+
+
+
+python3:
+
+```python
+print(5/2)
+print(5.0/2)
+print(5//2)
+print(5.0//2)
+print(5.0//2.0)
+
+2.5
+2.5
+2
+2.0
+2.0
+```
+
+### 谈谈对闭包的理解
+
+**什么是闭包？**
+
+　　在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。
+
+![img](D:\code\python\python_interview\python\1389184-20180623201649113-1869540257.png)
+
+　　一般情况下，在我们认知当中，如果一个函数结束，函数的内部所有东西都会释放掉，还给内存，局部变量都会消失。但是闭包是一种特殊情况，如果外函数在结束的时候发现有自己的临时变量将来会在内部函数中用到，就把这个临时变量绑定给了内部函数，然后自己再结束。
+
+```python
+def outer(a):
+    b = 10
+    def inner():
+        print(a+b)
+    return inner
+
+if __name__ == '__main__':
+    demo = outer(5)
+    demo()
+    demo2 = outer(7)
+    demo2()
+    
+>>15
+>>17
+```
+
+### 常用字符串格式化有哪几种？
+
+　　**第一种**：**最方便的**
+
+　　***\*缺点\**：需一个个的格式化**
+
+```python
+print('hello %s and %s'%('df','another df'))
+```
+
+ 
+
+　　**第二种**：**最好用的**
+
+　　**优点：不需要一个个的格式化，可以利用字典的方式，缩短时间**
+
+```python
+print('hello %(first)s and %(second)s'%{'first':'df' , 'second':'another df'})
+```
+
+　　**第三种**：**最先进的**
+
+　  **优点：可读性强**
+
+```python
+print('hello {first} and {second}'.format(first='df',second='another df'))
+```
+
+**第四种**
+
+```python
+first = 'wj'
+second='xjh'
+print(f'hello {first} and {second}')
+```
+
+
+
+### os和sys模块的作用？
 
 　    **os:**这个模块提供了一种方便的使用操作系统函数的方法。
 
@@ -676,6 +1233,34 @@ os.chdir('dirname') 改变目录
 
 os.mkdir/makedirs('dirname')创建目录/多层目录
 
+os.listdir('dirname') 列出指定目录的文件 
+
+os.getcwd() 取得当前工作目录 
+
+os.chmod() 改变目录权限
+
+os.path.basename(‘path/filename’) 去掉目录路径，返回文件名 
+
+os.path.dirname(‘path/filename’) 去掉文件名，返回目录路径 
+
+os.path.join(path1[,path2[,...]]) 将分离的各部分组合成一个路径名 
+
+os.path.split('path') 返回( dirname(), basename())元组 
+
+os.path.splitext() 返回 (filename, extension) 元组 
+
+os.path.getatime\ctime\mtime 分别返回最近访问、创建、修改时间 
+
+os.path.getsize() 返回文件大小 
+
+os.path.exists() 是否存在 
+
+os.path.isabs() 是否为绝对路径 
+
+os.path.isdir() 是否为目录 
+
+os.path.isfile() 是否为文件
+
  
 
 **sys 常用方法:**
@@ -694,13 +1279,36 @@ sys.path 返回模块的搜索路径，初始化时使用PYTHONPATH环境变量�
 
 
 
-### 16.如何生成一个随机数
+### 如何生成一个随机数
 
-### 17.面向对象深度优先和广度优先是什么？
+```python
+import random # 随机模块
 
-### 18.functools函数的作用？
+data = list(range(10))
+print(data)  # 打印有序的列表 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+random.shuffle(data) # 使有序变为无序 
+print(data) # 打印无序的列表 [4, 2, 5, 1, 6, 3, 9, 8, 0, 7]
+```
 
-### 19.如何判断是函数还是方法？
+
+
+### 面向对象深度优先和广度优先是什么？
+
+### functools函数的作用？
+
+functools用于高阶函数：指那些作用于函数或者返回其他函数的函数。通常情况下，只要是可以被当做函数调用的对象就是这个模块的目标。
+
+```python
+import functools 
+foo = functools.partial(int, base=8) 
+foo('11111')  # print 4681
+```
+
+所以，简单总结**functools.partial的作用**就是，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数，调用这个新函数会更简单。
+
+
+
+### 如何判断是函数还是方法？
 
 通常我们认为在类中的函数为方法，类外面声明def为函数，这种说法有点片面
 
@@ -740,7 +1348,7 @@ True
 
  可以用内置的isinstance 来判断
 
-### 20.静态方法和类方法区别？
+### 静态方法和类方法区别？
 
 **区别：**
 
@@ -762,7 +1370,7 @@ True
 
 类方法通过class调用或者通过实例化后的对象调用，是没有任何区别的，全部都是指向同一块内存地址。
 
-### 21.什么是反射？以及应用场景
+### 什么是反射？以及应用场景
 
 22.metaclass作用？以及应用场景
 
@@ -817,7 +1425,7 @@ json.dumps({'now':now}, cls=ComplexEncoder)
 
 
 
-### 27.json序列化时，默认遇到中文会转换成unicode,如果想要保留中文怎么办？
+### json序列化时，默认遇到中文会转换成unicode,如果想要保留中文怎么办？
 
 ```python
 
@@ -830,7 +1438,7 @@ d = {"name":"英雄无敌7"}
 # print(res) 会显示  {"name": "英雄无敌7"}
 ```
 
-### 28.简述yield和yield from关键字
+### 简述yield和yield from关键字
 
 ```python
 
@@ -952,7 +1560,29 @@ UDP则是面向消息传输的，是有保护消息边界的，接收方一次�
 
 12. 生产者消费者模型应用场景及优势？
 
+### python 协程与go协程的区别
 
+
+
+简单点说协程是进程和线程的升级版,进程和线程都面临着内核态和用户态的切换问题而耗费许多切换时间,而协程就是用户自己控制切换的时机,不再需要陷入系统的内核态.
+
+
+
+###### python协程与调度
+
+Python的协程源于yield指令。yield有两个功能:
+
+- yield item用于产出一个值，反馈给next()的调用方。
+- 作出让步，暂停执行生成器，让调用方继续工作，直到需要使用另一个值时再调用next()。
+
+go的协程本质上还是系统的线程调用，而Python中的协程是eventloop模型实现，所以虽然都叫协程，但并不是一个东西.
+Python 中的协程是严格的 1:N 关系，也就是一个线程对应了多个协程。虽然可以实现异步I/O，但是不能有效利用多核(GIL)。
+而 Go 中是 M:N 的关系，也就是 N 个协程会映射分配到 M 个线程上，这样带来了两点好处：
+
+- 多个线程能分配到不同核心上,CPU 密集的应用使用 goroutine 也会获得加速.
+- 即使有少量阻塞的操作，也只会阻塞某个 worker 线程，而不会把整个程序阻塞。
+
+goroutine 中不需要显式使用 await 交出控制权，但是 Go 也不会严格按照时间片去调度 goroutine，而是会在可能阻塞的地方插入调度。goroutine 的调度可以看做是半抢占式的
 
 ## django
 
@@ -1872,3 +2502,86 @@ class TestView(mixins.CreateModelMixin,GenericViewSet):
 每个用户再来访问时，先去记录中剔除过期记录，再根据列表的长度判断是否可以继续访问。
 如1分钟：40次，列表长度限制在40，超过40则不可访问
 ```
+
+## 前端
+
+### 谈谈你对http协议的认识。
+
+### 谈谈你对websocket协议的认识。
+
+```js
+websocket是给浏览器新建的一套（类似于http）协议，协议规定：浏览器和服务器连接之后不断开，以达到服务端向客户端主动推送消息。
+本质：
+创建一个连接后不断开的socket
+当连接成功之后：
+    客户端（浏览器）会自动向服务端发送消息，包含：Sec-WebSocket-Key: iyRe1KMHi4S4QXzcoboMmw==
+    服务端接收之后，会对于该数据进行加密：base64(sha1(swk + magic_string))
+    构造响应头：
+            HTTP/1.1 101 Switching Protocols\r\n
+            Upgrade:websocket\r\n
+            Connection: Upgrade\r\n
+            Sec-WebSocket-Accept: 加密后的值\r\n
+            WebSocket-Location: ws://127.0.0.1:8002\r\n\r\n        
+    发给客户端（浏览器）
+建立：双工通道，接下来就可以进行收发数据
+    发送数据是加密，解密，根据payload_len的值进行处理
+        payload_len <= 125
+        payload_len == 126
+        payload_len == 127
+    获取内容：
+        mask_key
+        数据
+        根据mask_key和数据进行位运算，就可以
+把```  
+值解析出来。
+```
+
+### 什么是magic string ？
+
+客户端向服务端发送消息时，会有一个'sec-websocket-key'和'magic string'的随机字符串(魔法字符串)， 服务端接收到消息后会把他们连接成一个新的key串，进行编码、加密，确保信息的安全性。
+
+### 如何创建响应式布局？
+
+### 你曾经使用过哪些前端框架？
+
+### 什么是ajax请求？并使用jQuery和XMLHttpRequest对象实现一个ajax请求。
+
+### 如何在前端实现轮训？
+
+    轮询：通过定时器让程序每隔n秒执行一次操作。
+
+
+
+### 如何在前端实现长轮训？
+
+客户端向服务器发送请求，服务器接到请求后hang住连接，等待30秒，直到有新消息，才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。
+
+### vuex的作用？
+
+### vue中的路由的拦截器的作用？
+
+### axios的作用？
+
+### 列举vue的常见指令。
+
+### 简述jsonp及实现原理？
+
+          JSONP 是json用来跨域的一个东西。原理是通过script标签的跨域特性来绕过同源策略。
+    JSONP的简单实现：创建一个回调函数，然后在远程服务上调用这个函数并且将JSON数据作为参数传递，完成回调。
+
+### 是什么cors ？
+
+       CORS:跨域资源共享
+    
+    
+    CORS：跨域资源共享（CORS，Cross-Origin Resource Sharing），随着技术的发展，现在的浏览器可以支持主动设置从而允许跨域请求，其本质是设置响应头，使得浏览器允许跨域请求。
+    
+    
+    跨域：跨域问题的出现主要是因为浏览器的同源策略，即浏览器必须保证只有 协议+端口+域名 一模一样才允许发 AJAX 请求。为了突破同源策略，所以需要跨域
+
+### 列举Http请求中常见的请求方式？
+
+### 列举Http请求中的状态码？
+
+### 列举Http请求中常见的请求头？
+
